@@ -96,7 +96,7 @@ for i in range(len(df)):
         pass
 df[['Status','Time']] = df.Status.str.split(" ", expand=True)
 
-# Rearange Collumnsexit
+# Rearange Collumns
 df = df[['Name', 'Created', 'Due By', 'Total_Exp', 'Base_Exp', 'Bonus_Exp', 'Time', 'Status']]
 
 print(df.to_string(), '\n') # Print ALL
