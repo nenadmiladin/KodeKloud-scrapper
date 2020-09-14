@@ -77,13 +77,19 @@ dataframe(rows)
 print(driver.title)
 driver.quit()
 
+# DATAFRAME ADJUSMENTS
+df = df.rename(columns={'Experience': 'Total_Exp'}) # Rename Experience
+df[['Base_Exp','Bonus_Exp']] = df.Total_Exp.str.split(" ", expand=True) # Extract base and bonus exp and add to two new collumns
 
-# JOIN BASIC AND BONUS EXPERIENCE
-#for i in range(len(df)):
-#    if len(df.loc[i, 'Experience'].split(' ')) > 1:
-#        df.loc[i, 'Experience' ] = int(df.loc[i, 'Experience' ].split(" ")[0]) + int(df.loc[i, 'Experience' ].split(" ")[1])  
-#    else:
-#        pass
+# SUM basic and bonus experience
+for i in range(len(df)):
+    if len(df.loc[i, 'Total_Exp'].split(' ')) > 1:
+        df.loc[i, 'Total_Exp'] = int(df.loc[i, 'Total_Exp'].split(" ")[0]) + int(df.loc[i, 'Total_Exp'].split(" ")[1])
+    else:
+        pass
+
+# ADJUST STATUS 
+
 
 
 print(df.to_string(), '\n') # Print ALL
