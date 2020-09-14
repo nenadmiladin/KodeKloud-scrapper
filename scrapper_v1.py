@@ -88,8 +88,15 @@ for i in range(len(df)):
     else:
         pass
 
-# ADJUST STATUS 
+# ADJUST STATUS AND ADD TIME COLLUMN 
+for i in range(len(df)):
+    if len(df.loc[i, 'Status'].split(' ')) > 1:
+        df.loc[i, 'Status'] = df.loc[i, 'Status'][:-2]  
+    else:
+        pass
+df[['Status','Time']] = df.Status.str.split(" ", expand=True)
 
-
+# Rearange Collumnsexit
+df = df[['Name', 'Created', 'Due By', 'Total_Exp', 'Base_Exp', 'Bonus_Exp', 'Time', 'Status']]
 
 print(df.to_string(), '\n') # Print ALL
