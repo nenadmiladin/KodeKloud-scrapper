@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: scrapper
+  name: scrapper-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scrapper
+  template:
+    metadata:
+      labels:
+        app: scrapper
+    spec:
+      containers:
+      - image: nenadmiladin/scrapper_kk:v5
+        name: scrapper-kk
+        command: ["/bin/sh", "-ec", "sleep 1000"]
