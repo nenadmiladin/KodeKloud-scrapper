@@ -6,7 +6,8 @@ import logging
 logging.basicConfig(format='%(asctime)s - %(process)d - %(levelname)s - %(message)s', 
                     level=logging.INFO,
                     filename='/temp/myapp.log',
-                    filemode='w')
+                    filemode='w',
+                    stream=sys.stdout)
 
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
