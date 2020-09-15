@@ -50,6 +50,7 @@ sleep(4.5)
 
 # Scroll to the bottom of the page by executing JS
 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+sleep(2)
 
 # ---------------- Second Part of the Script ------------------------------------------------------------------
 # Get the Table Header
