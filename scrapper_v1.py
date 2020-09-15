@@ -1,6 +1,5 @@
 from selenium import webdriver
 import pandas as pd
-import matplotlib.pyplot as plt
 from time import sleep
 
 def row_number():
@@ -20,15 +19,16 @@ def dataframe(rows):
     df.loc[df.Status == "Failed\nView Details", "Status"] = "Failed" # Rename Failed View Details to Failed
     df.loc[df.Status == "Go", "Status"] = "Pending" # Rename Go field to Pending 
 
-email = input("Input email: ")
-password = input("Input password: ")
+#email = input("Input email: ")
+#password = input("Input password: ")
 # ---------------------------------------------------------------------------------------------------------------------
 
-# Setup Chrome Driver
+# Setup Chrome Driver LINUX
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless') # HEADLESS BROWSER
 chrome_options.add_argument("--log-level=3") # DON'T SHOW LOGS IN CLI
-chrome_driver_binary = r"C:\Users\User\Downloads\chromedriver_win32\chromedriver.exe" # Chrome Driver Location
+chrome_options.add_argument('--no-sandbox')
+chrome_driver_binary = r"/opt/chromedriver" # Chrome Driver Location
 driver = webdriver.Chrome(executable_path=chrome_driver_binary, options=chrome_options)
 
 # Navigate to KodeKloud Engineer
@@ -36,8 +36,8 @@ driver.get('https://www.kodekloud-engineer.com')
 driver.implicitly_wait(30)
 
 # Login
-username = driver.find_element_by_id("inputEmail").send_keys(email)
-password = driver.find_element_by_id("inputPassword").send_keys(password)
+username = driver.find_element_by_id("inputEmail").send_keys('nenadmiladin@yahoo.com')
+password = driver.find_element_by_id("inputPassword").send_keys('kodekloud4life')
 
 sign_in_button = driver.find_element_by_xpath("/html/body/div[2]/div[3]/div/div/div/form[1]/button[1]").click()
 sleep(2)
@@ -50,6 +50,7 @@ sleep(4.5)
 
 # Scroll to the bottom of the page by executing JS
 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+sleep(2)
 
 # ---------------- Second Part of the Script ------------------------------------------------------------------
 # Get the Table Header
@@ -77,13 +78,26 @@ dataframe(rows)
 print(driver.title)
 driver.quit()
 
+# DATAFRAME ADJUSMENTS
+df = df.rename(columns={'Experience': 'Total_Exp'}) # Rename Experience
+df[['Base_Exp','Bonus_Exp']] = df.Total_Exp.str.split(" ", expand=True) # Extract base and bonus exp and add to two new collumns
 
-# JOIN BASIC AND BONUS EXPERIENCE
-#for i in range(len(df)):
-#    if len(df.loc[i, 'Experience'].split(' ')) > 1:
-#        df.loc[i, 'Experience' ] = int(df.loc[i, 'Experience' ].split(" ")[0]) + int(df.loc[i, 'Experience' ].split(" ")[1])  
-#    else:
-#        pass
+# SUM basic and bonus experience
+for i in range(len(df)):
+    if len(df.loc[i, 'Total_Exp'].split(' ')) > 1:
+        df.loc[i, 'Total_Exp'] = int(df.loc[i, 'Total_Exp'].split(" ")[0]) + int(df.loc[i, 'Total_Exp'].split(" ")[1])
+    else:
+        pass
 
+# ADJUST STATUS AND ADD TIME COLLUMN 
+for i in range(len(df)):
+    if len(df.loc[i, 'Status'].split(' ')) > 1:
+        df.loc[i, 'Status'] = df.loc[i, 'Status'][:-2]  
+    else:
+        pass
+df[['Status','Time']] = df.Status.str.split(" ", expand=True)
+
+# Rearange Collumns
+df = df[['Name', 'Created', 'Due By', 'Total_Exp', 'Base_Exp', 'Bonus_Exp', 'Time', 'Status']]
 
 print(df.to_string(), '\n') # Print ALL
