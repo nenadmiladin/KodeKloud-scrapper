@@ -3,11 +3,15 @@ import pandas as pd
 from time import sleep
 import logging
 
+file_handler = logging.FileHandler(filename='tmp.log')
+stdout_handler = logging.StreamHandler(sys.stdout)
+handlers = [file_handler, stdout_handler]
+
 logging.basicConfig(format='%(asctime)s - %(process)d - %(levelname)s - %(message)s', 
                     level=logging.INFO,
                     filename='/temp/myapp.log',
                     filemode='w',
-                    stream=sys.stdout)
+                    handlers=handlers)
 
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
