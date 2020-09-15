@@ -20,7 +20,8 @@ RUN wget https://chromedriver.storage.googleapis.com/85.0.4183.87/chromedriver_l
 
 RUN unzip chromedriver_linux64.zip -d /opt
 
-ADD scrapper.py /opt
+ADD scrapper_v1.py /opt
 
+WORKDIR /opt
 
-docker run -it --net=host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw
+CMD ["python3", "scrapper_v1.py"]
