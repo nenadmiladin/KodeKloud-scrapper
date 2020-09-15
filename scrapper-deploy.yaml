@@ -17,4 +17,4 @@ spec:
       containers:
       - image: nenadmiladin/scrapper_kk:v5
         name: scrapper-kk
-        command: ["/bin/sh", "-ec", "sleep 1000"]
+        command: ["/bin/sh", "-c", "sleep 1800"]
