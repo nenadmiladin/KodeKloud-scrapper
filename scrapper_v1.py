@@ -2,6 +2,7 @@ from selenium import webdriver
 import pandas as pd
 from time import sleep
 import logging
+import sys
 
 file_handler = logging.FileHandler(filename='tmp.log')
 stdout_handler = logging.StreamHandler(sys.stdout)
