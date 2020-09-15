@@ -13,9 +13,6 @@ logging.basicConfig(format='%(asctime)s - %(process)d - %(levelname)s - %(messag
                     filemode='w',
                     handlers=handlers)
 
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-
 logging.info("DEFINE FUNKTIONS")
 
 def row_number():
