@@ -3,6 +3,13 @@ import pandas as pd
 from time import sleep
 import logging
 
+logging.basicConfig(format='%(asctime)s - %(process)d - %(levelname)s - %(message)s', 
+                    level=logging.INFO,
+                    filename='/temp/myapp.log',
+                    filemode='w')
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
 
 logging.info("DEFINE FUNKTIONS")
 
