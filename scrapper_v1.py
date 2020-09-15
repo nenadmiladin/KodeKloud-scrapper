@@ -1,6 +1,10 @@
 from selenium import webdriver
 import pandas as pd
 from time import sleep
+import logging
+
+
+logging.info("DEFINE FUNKTIONS")
 
 def row_number():
     # Counts the number of rows in the table on site
@@ -21,9 +25,11 @@ def dataframe(rows):
 
 #email = input("Input email: ")
 #password = input("Input password: ")
+
 # ---------------------------------------------------------------------------------------------------------------------
 
-# Setup Chrome Driver LINUX
+logging.info("Setup Chrome Driver LINUX")
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless') # HEADLESS BROWSER
 chrome_options.add_argument("--log-level=3") # DON'T SHOW LOGS IN CLI
@@ -31,39 +37,45 @@ chrome_options.add_argument('--no-sandbox')
 chrome_driver_binary = r"/opt/chromedriver" # Chrome Driver Location
 driver = webdriver.Chrome(executable_path=chrome_driver_binary, options=chrome_options)
 
-# Navigate to KodeKloud Engineer
+logging.info("Navigate to KodeKloud Engineer")
+
 driver.get('https://www.kodekloud-engineer.com')
 driver.implicitly_wait(30)
 
-# Login
+logging.info("Login")
 username = driver.find_element_by_id("inputEmail").send_keys('nenadmiladin@yahoo.com')
 password = driver.find_element_by_id("inputPassword").send_keys('kodekloud4life')
 
 sign_in_button = driver.find_element_by_xpath("/html/body/div[2]/div[3]/div/div/div/form[1]/button[1]").click()
 sleep(2)
 
-# Find dropdown menu and choose page size 100
+logging.info("Find dropdown menu and choose page size 100")
+
 dropdown = driver.find_element_by_xpath("/html/body/div[2]/div[3]/div/div/div[1]/div[3]/div/div/div[2]/button").click()
 sleep(0.5)
 dropdown_100 = driver.find_element_by_xpath("/html/body/div[2]/div[3]/div/div/div[1]/div[3]/div/div/div[2]/div/a[5]").click()
 sleep(4.5)
 
-# Scroll to the bottom of the page by executing JS
+logging.info("Scroll to the bottom of the page by executing JS")
+
 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 sleep(2)
 
-# ---------------- Second Part of the Script ------------------------------------------------------------------
-# Get the Table Header
+logging.info("------------------------------------DATAFRAME ----------------------------------------")
+
+logging.info("Get the Table Header"
+)
 header = driver.find_element_by_xpath('//*[@id="main-wrapper"]/div[3]/div/div/div[1]/div[3]/div/div/div[4]/table/thead/tr').text.split(' ')
 table_header = header[:2] + [header[2] + " " + header[3]] + header[-2:] # Same as header just concatenated Due By
 
-# DATAFRAME CREATION FIRST PAGE
+logging.info:("DATAFRAME CREATION FIRST PAGE")
+
 df = pd.DataFrame(columns = table_header)
 
 row_number()
 dataframe(rows)
 
-# CLICK ON NEXT BUTTON
+logging.info(:"CLICK ON NEXT BUTTON")
 next = driver.find_element_by_xpath('//*[@id="main-wrapper"]/div[3]/div/div/div[1]/div[3]/div/div/div[6]/a[2]')
 next.click()
 sleep(4)
@@ -72,24 +84,28 @@ sleep(4)
 # task_number = driver.find_element_by_xpath('//*[@id="main-wrapper"]/div[3]/div/div/div[1]/div[3]/div/div/div[6]')
 # task_number.text.split(' of ')[1].split(' entries ')[0]
 
-# SECOND PAGE
+logging.info("ADD SECOND PAGE DATA")
+
 row_number()
 dataframe(rows)
 print(driver.title)
 driver.quit()
 
-# DATAFRAME ADJUSMENTS
+logging.info("DATAFRAME ADJUSMENTS")
+
 df = df.rename(columns={'Experience': 'Total_Exp'}) # Rename Experience
 df[['Base_Exp','Bonus_Exp']] = df.Total_Exp.str.split(" ", expand=True) # Extract base and bonus exp and add to two new collumns
 
-# SUM basic and bonus experience
+logging.info("SUM basic and bonus experience")
+
 for i in range(len(df)):
     if len(df.loc[i, 'Total_Exp'].split(' ')) > 1:
         df.loc[i, 'Total_Exp'] = int(df.loc[i, 'Total_Exp'].split(" ")[0]) + int(df.loc[i, 'Total_Exp'].split(" ")[1])
     else:
         pass
 
-# ADJUST STATUS AND ADD TIME COLLUMN 
+logging.info("ADJUST STATUS AND ADD TIME COLLUMN")
+
 for i in range(len(df)):
     if len(df.loc[i, 'Status'].split(' ')) > 1:
         df.loc[i, 'Status'] = df.loc[i, 'Status'][:-2]  
@@ -97,7 +113,10 @@ for i in range(len(df)):
         pass
 df[['Status','Time']] = df.Status.str.split(" ", expand=True)
 
-# Rearange Collumns
+logging.info("Rearange Collumns")
+
 df = df[['Name', 'Created', 'Due By', 'Total_Exp', 'Base_Exp', 'Bonus_Exp', 'Time', 'Status']]
+
+logging.info("RESULT")
 
 print(df.to_string(), '\n') # Print ALL
