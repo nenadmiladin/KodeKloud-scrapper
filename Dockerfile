@@ -7,7 +7,7 @@ RUN apt-get update -y && \
     
 RUN pip3 install --upgrade pip
 
-RUN pip3 install pandas selenium matplotlib
+RUN pip3 install pandas selenium
 
 # Set the Chrome repo.
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
