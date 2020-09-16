@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: scrapper-deployment
+  namespace: scrapper
   labels:
     app: scrapper
-  name: scrapper-deployment
 spec:
   replicas: 1
   selector:
@@ -15,6 +16,16 @@ spec:
         app: scrapper
     spec:
       containers:
-      - image: nenadmiladin/scrapper_kk:v5
+      - image: nenadmiladin/scrapper_kk:v7
         name: scrapper-kk
-        command: ["/bin/sh", "-c", "sleep 1800"]
+        command: ["/bin/sh", "-c", "sleep 2800"]
+        volumeMounts:
+        - mountPath: /tmp
+          name: test-volume
+      volumes:
+      - name: test-volume
+        hostPath:
+        # directory location on host
+          path: /tmp
+        # this field is optional
+          type: Directory
