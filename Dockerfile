@@ -3,7 +3,7 @@ FROM ubuntu:latest
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y && \
-    apt-get install unzip python3 python3-pip wget -y
+    apt-get install unzip vim git python3 python3-pip wget -y
     
 RUN pip3 install --upgrade pip
 
