@@ -2,17 +2,11 @@ from selenium import webdriver
 import pandas as pd
 from time import sleep
 import logging
-import sys
-
-file_handler = logging.FileHandler(filename='tmp.log')
-stdout_handler = logging.StreamHandler(sys.stdout)
-handlers = [file_handler, stdout_handler]
 
 logging.basicConfig(format='%(asctime)s - %(process)d - %(levelname)s - %(message)s', 
                     level=logging.INFO,
-                    filename='/temp/myapp.log',
-                    filemode='w',
-                    handlers=handlers)
+                    filename='/tmp/scrapper.log',
+                    filemode='w')
 
 logging.info("DEFINE FUNKTIONS")
 
