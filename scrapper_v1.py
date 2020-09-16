@@ -79,7 +79,7 @@ df = pd.DataFrame(columns = table_header)
 row_number()
 dataframe(rows)
 
-logging.info(:"CLICK ON NEXT BUTTON")
+logging.info("CLICK ON NEXT BUTTON")
 next = driver.find_element_by_xpath('//*[@id="main-wrapper"]/div[3]/div/div/div[1]/div[3]/div/div/div[6]/a[2]')
 next.click()
 sleep(4)
