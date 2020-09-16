@@ -1,6 +1,11 @@
 # KodeKloud-scrapper
 
 
+execute script from master:
+
+kubectl exec -it scrapper-deployment-f7d54b448-vzksk -- python3 scrapper_v1.py
+
+
 execute script in pod container:
 
                      POD CONTAINER NAME
