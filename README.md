@@ -2,6 +2,8 @@
 
 
 execute script from master:
+                           
+                           POD NAME
 
 kubectl exec -it scrapper-deployment-f7d54b448-vzksk -- python3 scrapper_v1.py
 
